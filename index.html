@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Productivity Dashboard - Task management, Pomodoro timer, and sticky notes">
+    <meta name="theme-color" content="#06b6d4">
+    <title>Productivity Dashboard</title>
+
+    <!-- Preconnect to fonts for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts: Poppins with font-display: swap for better performance -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="widgets-styles.css">
+</head>
+<body>
+    <!-- Main container -->
+    <div id="app-root" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="app-title">⚡ Productivity Dashboard</h1>
+                    <p class="app-subtitle">Stay focused. Stay organized.</p>
+                </div>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="app-main">
+            
+            <!-- Left Column: Notes -->
+            <section class="column column-left">
+                
+                <!-- Sticky Notes Section -->
+                <article class="card notes-section">
+                    <div class="card-header">
+                        <h2 class="section-title">📝 Notes</h2>
+                        <button id="notes-add-btn" class="btn btn-primary btn-sm" aria-label="Add new note">
+                            + Add
+                        </button>
+                    </div>
+                    <div id="notes-container" class="notes-grid" role="list" aria-label="Sticky notes">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </article>
+
+                <!-- Mini Date-Only Calendar (below Notes) -->
+                <article class="card mini-calendar-card" aria-label="Mini Calendar">
+                    <div class="card-header">
+                        <div class="mini-calendar-header">
+                            <h3 class="section-title">📅 Calendar</h3>
+                        </div>
+                    </div>
+                    <div class="mini-calendar-body">
+                        <div class="mini-calendar-nav" aria-hidden="true">
+                            <button class="mini-cal-prev" aria-label="Previous month">◀</button>
+                            <div id="mini-calendar-month" class="mini-calendar-month" aria-live="polite">Month Year</div>
+                            <button class="mini-cal-next" aria-label="Next month">▶</button>
+                        </div>
+
+                        <div class="mini-calendar-grid" id="mini-calendar-grid" role="grid" aria-label="Calendar days">
+                            <!-- Rendered by widgets-mini-calendar.js -->
+                        </div>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Center Column: Tasks (Full Width) -->
+            <section class="column column-center">
+                
+                <!-- To-Do List Section -->
+                <article class="card todo-section">
+                    <div class="card-header">
+                        <h2 class="section-title">📋 Tasks</h2>
+                        <button id="todo-add-btn" class="btn btn-primary btn-sm" aria-label="Add new task">
+                            + Add
+                        </button>
+                    </div>
+
+                    <!-- Todo Filters -->
+                    <div class="todo-filters" role="group" aria-label="Filter tasks">
+                        <button class="filter-btn filter-btn-active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="active">Active</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+
+                    <!-- Todo Sort -->
+                    <div class="todo-sort">
+                        <label for="todo-sort-select" class="label-inline">Sort:</label>
+                        <select id="todo-sort-select" class="select-input" aria-label="Sort tasks by">
+                            <option value="date-desc">Newest first</option>
+                            <option value="date-asc">Oldest first</option>
+                            <option value="priority">Priority</option>
+                            <option value="title">Title A-Z</option>
+                        </select>
+                    </div>
+
+                    <!-- Todo List -->
+                    <ul id="todo-list" class="todo-list" role="list" aria-label="Task list">
+                        <!-- Populated by JavaScript -->
+                    </ul>
+
+                    <!-- Todo Actions -->
+                    <div class="todo-actions">
+                        <button id="todo-clear-completed-btn" class="btn btn-secondary btn-sm" aria-label="Clear all completed tasks">
+                            Clear completed
+                        </button>
+                    </div>
+                </article>
+
+            </section>
+
+            <!-- Right Column: Widgets -->
+            <section class="column column-right">
+                
+                <!-- Pomodoro Timer Section -->
+                <article class="card pomodoro-section">
+                    <div class="card-header">
+                        <h2 class="section-title">🍅 Pomodoro Timer</h2>
+                    </div>
+
+                    <!-- Timer Display -->
+                    <div class="pomodoro-display">
+                        <div class="timer-circle">
+                            <svg class="progress-ring" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" width="100%" height="100%">
+                                <circle class="progress-ring-bg" cx="100" cy="100" r="90" />
+                                <circle class="progress-ring-circle" cx="100" cy="100" r="90" />
+                            </svg>
+                            <div class="timer-text">
+                                <div id="timer-display" class="timer-value" role="status" aria-live="polite" aria-label="Time remaining">25:00</div>
+                                <div id="session-info" class="session-type">Focus</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timer Controls -->
+                    <div class="pomodoro-controls">
+                        <button id="pomodoro-start-btn" class="btn btn-primary" aria-label="Start timer">
+                            Start
+                        </button>
+                        <button id="pomodoro-pause-btn" class="btn btn-secondary" aria-label="Pause timer" disabled>
+                            Pause
+                        </button>
+                        <button id="pomodoro-reset-btn" class="btn btn-secondary" aria-label="Reset timer">
+                            Reset
+                        </button>
+                    </div>
+
+                    <!-- Session Counter -->
+                    <div class="session-counter">
+                        <span id="session-count">Session: 1</span>
+                    </div>
+
+                    <!-- Pomodoro Settings -->
+                    <details class="settings-collapsible">
+                        <summary class="settings-summary">⚙️ Settings</summary>
+                        <div class="settings-panel">
+                            <div class="setting-group">
+                                <label for="focus-duration">Focus (minutes):</label>
+                                <input id="focus-duration" type="number" min="1" max="60" value="25" class="input-number">
+                            </div>
+                            <div class="setting-group">
+                                <label for="short-break-duration">Short Break (minutes):</label>
+                                <input id="short-break-duration" type="number" min="1" max="30" value="5" class="input-number">
+                            </div>
+                            <div class="setting-group">
+                                <label for="long-break-duration">Long Break (minutes):</label>
+                                <input id="long-break-duration" type="number" min="1" max="60" value="15" class="input-number">
+                            </div>
+                            <div class="setting-group">
+                                <label for="sessions-before-long">Sessions before long break:</label>
+                                <input id="sessions-before-long" type="number" min="1" max="10" value="4" class="input-number">
+                            </div>
+                            <div class="setting-group checkbox-group">
+                                <input id="sound-toggle" type="checkbox" checked>
+                                <label for="sound-toggle" class="checkbox-label">Sound notifications</label>
+                            </div>
+                            <button id="settings-save-btn" class="btn btn-primary btn-sm">Save Settings</button>
+                        </div>
+                    </details>
+                </article>
+                
+                <!-- Quote Widget -->
+                <article class="pd-quote-widget card">
+                    <div class="card-header">
+                        <h2 class="section-title">💭 Daily Motivation</h2>
+                        <button class="pd-quote-favorites-btn" aria-label="View favorite quotes" title="View favorites">
+                            ⭐ <span class="pd-quote-favorites-count">0</span>
+                        </button>
+                    </div>
+
+                    <!-- Quote Display -->
+                    <div class="pd-quote-container" role="region" aria-live="polite" aria-label="Daily quote">
+                        <div class="pd-quote-text">Loading quote...</div>
+                        <div class="pd-quote-author">— Dashboard</div>
+                        <div class="pd-quote-timestamp" aria-label="Last updated">Last updated: now</div>
+                    </div>
+
+                    <!-- Quote Controls -->
+                    <div class="pd-quote-controls">
+                        <button class="btn btn-secondary btn-sm pd-quote-next-btn" aria-label="Show next quote">Next Quote</button>
+                        <button class="btn btn-secondary btn-sm pd-quote-copy-btn" aria-label="Copy quote to clipboard">📋 Copy</button>
+                        <button class="btn btn-secondary btn-sm pd-quote-favorite-btn" aria-label="Add quote to favorites">☆ Save</button>
+                    </div>
+                </article>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Productivity Dashboard v1.0 | Data stored locally in your browser</p>
+        </footer>
+    </div>
+
+    <!-- Modal: Edit Task -->
+    <div id="edit-task-modal" class="modal" role="dialog" aria-labelledby="edit-task-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="edit-task-title" class="modal-title">Edit Task</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <form id="edit-task-form" class="modal-form">
+                <div class="form-group">
+                    <label for="edit-task-title-input">Title</label>
+                    <input id="edit-task-title-input" type="text" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-description-input">Description</label>
+                    <textarea id="edit-task-description-input" class="input-field textarea" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-date-input">Due Date</label>
+                    <input id="edit-task-date-input" type="date" class="input-field">
+                </div>
+                <div class="form-group">
+                    <label for="edit-task-priority-input">Priority</label>
+                    <select id="edit-task-priority-input" class="input-field">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Add Note -->
+    <div id="note-modal" class="modal" role="dialog" aria-labelledby="note-modal-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="note-modal-title" class="modal-title">New Note</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <form id="note-form" class="modal-form">
+                <div class="form-group">
+                    <label for="note-title-input">Title</label>
+                    <input id="note-title-input" type="text" class="input-field" placeholder="Note title" required>
+                </div>
+                <div class="form-group">
+                    <label for="note-body-input">Content</label>
+                    <textarea id="note-body-input" class="input-field textarea" rows="5" placeholder="Note content"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Save Note</button>
+                    <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" role="region" aria-label="Notifications" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Quote Favorites Modal -->
+    <div id="pd-quote-favorites-modal" class="modal" role="dialog" aria-labelledby="pd-favorites-title" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="pd-favorites-title" class="modal-title">⭐ Favorite Quotes</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <ul id="pd-favorites-list" class="pd-favorites-list" role="list">
+                    <!-- Favorites populated by JS -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="script.js" defer></script>
+    <script src="widgets-mini-calendar.js" defer></script>
+    <script src="widgets-quote.js" defer></script>
+</body>
+</html>

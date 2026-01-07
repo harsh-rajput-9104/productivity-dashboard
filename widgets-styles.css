@@ -1,0 +1,278 @@
+/* ========================================
+   Productivity Dashboard - Widget Styles
+    Quote Widget
+   ======================================== */
+
+/* ========================================
+   CSS VARIABLES (Widget-Specific)
+   ======================================== */
+
+:root {
+    --pd-quote-bg: rgba(6, 182, 212, 0.05);
+    --pd-quote-text: var(--text);
+    --pd-quote-author: var(--text-secondary);
+    --pd-quote-border: var(--primary);
+}
+
+body.dark-theme {
+    --pd-quote-bg: rgba(6, 182, 212, 0.1);
+}
+
+/* ========================================
+   A) QUOTE WIDGET
+   ======================================== */
+
+.pd-quote-widget {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.pd-quote-widget .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--primary);
+    gap: 1rem;
+}
+
+.pd-quote-favorites-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.pd-quote-favorites-btn:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.pd-quote-favorites-count {
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Quote Container */
+.pd-quote-container {
+    background-color: var(--pd-quote-bg);
+    border-left: 4px solid var(--pd-quote-border);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: pdQuoteFadeIn 0.5s ease-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+@keyframes pdQuoteFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pd-quote-container {
+        animation: none;
+    }
+}
+
+.pd-quote-text {
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--pd-quote-text);
+    margin-bottom: var(--spacing-sm);
+    font-style: italic;
+}
+
+.pd-quote-author {
+    font-size: var(--font-size-sm);
+    color: var(--pd-quote-author);
+    text-align: right;
+    margin-bottom: var(--spacing-md);
+}
+
+.pd-quote-timestamp {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    padding-top: var(--spacing-sm);
+}
+
+/* Quote Controls */
+.pd-quote-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: nowrap;
+}
+
+.pd-quote-controls button {
+    flex: 1;
+    min-width: 100px;
+}
+
+/* Favorites List Modal */
+.pd-favorites-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.pd-favorites-list li {
+    padding: var(--spacing-sm);
+    background-color: var(--bg);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--primary);
+    transition: var(--transition-fast);
+}
+
+.pd-favorites-list li:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
+}
+
+.pd-favorites-item-text {
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-xs);
+}
+
+.pd-favorites-item-author {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.pd-favorites-item-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.pd-favorites-item-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: var(--transition-fast);
+}
+
+.pd-favorites-item-btn:hover {
+    color: var(--primary);
+}
+
+.pd-favorites-item-btn.remove:hover {
+    color: var(--error);
+}
+
+
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .pd-quote-controls {
+        display: none;
+    }
+}
+
+/* ========================================
+   MINI CALENDAR WIDGET (Date-Only)
+   ======================================== */
+
+.mini-calendar-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.mini-calendar-card .card-header {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.mini-calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+}
+
+.mini-calendar-nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.mini-calendar-nav button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.mini-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+}
+
+.mini-calendar-weekday {
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.mini-calendar-day {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.mini-calendar-day.muted {
+    color: var(--text-secondary);
+    opacity: 0.85;
+}
+
+.mini-calendar-day.today {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    box-shadow: 0 4px 10px rgba(6, 182, 212, 0.12);
+}
+
+@media (max-width: 768px) {
+    .mini-calendar-day { height: 30px; font-size: 0.85rem; }
+}
+
