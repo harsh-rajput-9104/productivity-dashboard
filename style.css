@@ -66,13 +66,36 @@
 
 /* Dark theme toggle */
 body.dark-theme {
-    --bg: #0f1724;
-    --card: #0b1220;
+    /* Core surfaces */
+    --bg: #020617;              /* app background */
+    --card: #020617;            /* cards & panels */
     --border: #1e293b;
-    --primary: #06b6d4;
-    --text: #e6eef6;
-    --text-secondary: #cbd5e1;
-    --muted: #475569;
+
+    /* Brand / accents */
+    --primary: #22d3ee;
+    --primary-dark: #0891b2;
+    --primary-light: #67e8f9;
+
+    /* Text */
+    --text: #e5e7eb;            /* primary text */
+    --text-secondary: #94a3b8;  /* muted text */
+    --muted: #334155;
+
+    /* Status colors (adjusted for dark UI) */
+    --success: #34d399;
+    --warning: #fbbf24;
+    --error: #f87171;
+
+    /* Soft UI surfaces */
+    --soft-bg: rgba(15, 23, 42, 0.6);
+    --soft-border: rgba(148, 163, 184, 0.25);
+
+    /* Sticky notes (dark-mode safe) */
+    --note-yellow: #2a364b;
+    --note-blue: #0f1f33;
+    --note-purple: #1f1635;
+    --note-red: #331414;
+    --note-green: #123326;
 }
 
 /* Reset */
@@ -96,6 +119,60 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
+/* ===============================
+   Pomodoro Buttons – FINAL FIX
+   =============================== */
+
+#pomodoro-start-btn,
+#pomodoro-pause-btn,
+#pomodoro-reset-btn {
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-md);
+    min-width: 92px;
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.25);
+    transition: all 150ms ease;
+}
+
+/* Hover */
+#pomodoro-start-btn:hover:not(:disabled),
+#pomodoro-pause-btn:hover:not(:disabled),
+#pomodoro-reset-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(6, 182, 212, 0.35);
+}
+
+/* Active */
+#pomodoro-start-btn:active:not(:disabled),
+#pomodoro-pause-btn:active:not(:disabled),
+#pomodoro-reset-btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+/* 🔥 FIXED disabled state */
+#pomodoro-start-btn:disabled,
+#pomodoro-pause-btn:disabled,
+#pomodoro-reset-btn:disabled {
+    background-color: rgba(6, 182, 212, 0.45);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+  /* FORCE same color for Pomodoro buttons (even when disabled) */
+#pomodoro-start-btn,
+#pomodoro-pause-btn,
+#pomodoro-reset-btn,
+#pomodoro-start-btn:disabled,
+#pomodoro-pause-btn:disabled,
+#pomodoro-reset-btn:disabled {
+    background-color: #06b6d4 !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    border: none !important;
+}
+
 
 /* --------
    Layout & Structure
@@ -576,8 +653,13 @@ label {
 }
 
 .note-card {
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    padding: 1.25rem;
+    background: linear-gradient(
+        135deg,
+        var(--note-yellow, #fef3c7),
+        var(--note-yellow, #fde68a)
+    );
+    color: var(--text);
+    border: 1px solid var(--border);    padding: 1.25rem;
     border-radius: 0.75rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 150ms ease-out;
@@ -590,21 +672,6 @@ label {
     border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.note-card:nth-child(2) {
-    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
-}
-
-.note-card:nth-child(3) {
-    background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
-}
-
-.note-card:nth-child(4) {
-    background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%);
-}
-
-.note-card:nth-child(5) {
-    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-}
 
 .note-card:hover {
     transform: translateY(-3px);
@@ -1023,7 +1090,26 @@ label {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
 }
+/* ===============================
+   Daily Motivation – Text Fix
+   =============================== */
 
+body.dark-theme .pd-quote-container {
+    color: #e6eef6;
+}
+
+body.dark-theme .pd-quote-text {
+    color: #f1f5f9;
+    opacity: 1;
+}
+
+body.dark-theme .pd-quote-author {
+    color: #94a3b8;
+}
+
+body.dark-theme .pd-quote-timestamp {
+    color: #7dd3fc;
+}
 /* --------
    Responsive Design
    -------- */

@@ -295,9 +295,15 @@ const TodoManager = {
             // Checkbox handler
             const checkbox = li.querySelector('.todo-checkbox');
             checkbox.addEventListener('change', () => {
-                this.toggleTodo(todo.id);
-                li.classList.toggle('completed');
-                announce(`Task marked ${this.toggleTodo(todo.id).completed ? 'complete' : 'incomplete'}`);
+             const updatedTodo = this.toggleTodo(todo.id);
+                 li.classList.toggle('completed', updatedTodo.completed);
+                     if (updatedTodo.completed) {
+                         showToast('✅ Task Completed', 'success');
+                         announce('Task completed');
+                         }else {
+                         showToast('↩️ Task Marked Active', 'info');
+                         announce('Task marked active');
+                        }
             });
 
             // Edit button
